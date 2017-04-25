@@ -27,6 +27,7 @@ class TCPLogstashHandler(SocketHandler, object):
         self.keyfile = keyfile
         self.certfile = certfile
         self.ca_certs = ca_certs
+        self.check_hostname = check_hostname
         if version == 1:
             self.formatter = formatter.LogstashFormatterVersion1(message_type, tags, fqdn)
         else:
@@ -47,7 +48,7 @@ class TCPLogstashHandler(SocketHandler, object):
             else:
                 context.verify_mode = ssl.CERT_NONE
                 context.check_hostname = False
-        if not check_hostname:
+        if not self.check_hostname:
             context.check_hostname = False
         # Client side certificate auth.
         if self.certfile and self.keyfile:
